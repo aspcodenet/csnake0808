@@ -90,23 +90,33 @@ Snake_Direction getNextSnakeDirection(Snake_Direction currentSnakeDirection){
 }
 
 
-void moveSnake(Snake *snake,Snake_Direction direction){
-    // if(direction == Snake_Direction_Up){
-    //     if(snake->Y == 2) snake->Y = ROWS+1;
-    //     else snake->Y--;
-    // }
-    // if(direction == Snake_Direction_Down){
-    //     if(snake->Y == ROWS+1) snake->Y = 2;
-    //     else snake->Y++;
-    // }
-    // if(direction == Snake_Direction_Left){
-    //     if(snake->X == 2) snake->X = COLS+1;
-    //     else snake->X--;
-    // }
-    // if(direction == Snake_Direction_Right){
-    //     if(snake->X == COLS+1) snake->X = 2;
-    //     else snake->X++;
-    // }
+void snake_move(Snake *snake,Snake_Direction direction){
+    Position huvudPosition = snake->pos[0];
+
+    if(direction == Snake_Direction_Up){
+        if(huvudPosition.Y == 2) huvudPosition.Y = ROWS+1;
+        else huvudPosition.Y--;
+    }
+    if(direction == Snake_Direction_Down){
+        if(huvudPosition.Y == ROWS+1) huvudPosition.Y = 2;
+        else huvudPosition.Y++;
+    }
+    if(direction == Snake_Direction_Left){
+        if(huvudPosition.X == 2) huvudPosition.X = COLS+1;
+        else huvudPosition.X--;
+    }
+    if(direction == Snake_Direction_Right){
+        if(huvudPosition.X == COLS+1) huvudPosition.X = 2;
+        else huvudPosition.X++;
+    }
+    // huvudposition 2,10
+    // snake->pos[0].X/Y = Huvudet             3,10
+    // snake->pos[1].X/Y = Segment 1           4,10  
+    // snake->pos[2].X/Y = Svansen             5,10
+    for(int segment = snake->size - 1; segment > 0; segment--)   {
+        snake->pos[segment] = snake->pos[segment-1];
+    }
+    snake->pos[0] = huvudPosition;
 
 }
 
@@ -122,9 +132,8 @@ void snake_init(Snake *snake){
     snake->pos[1].Y = 5;    
     snake->pos[2].X = 3;
     snake->pos[2].Y = 5;    
-
-
 }
+
 
 int main(){
     Snake snake; // snake är en array med kroppsdelar - varje kroppsdel har en X och en Y
@@ -141,9 +150,10 @@ int main(){
         drawBoundaries();   // BEHÖVS INTE MNED LED MATRISEN
         drawSnake(&snake); // Tänd LEDDEN där den är
         // om tryckt på u snake.Y = snake.Y - 1
+ 
         gotoxy(0,0);
         currentDirection = getNextSnakeDirection(currentDirection);
-        moveSnake(&snake,currentDirection);
+        snake_move(&snake,currentDirection);
 
         // sleep
     }
