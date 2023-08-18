@@ -109,6 +109,16 @@ void moveSnake(Snake *snake,Snake_Direction direction){
 //unsigned char B[] = {0B01111000,0B01001000,0B01001000,0B01110000,0B01001000,0B01000100,0B01000100,0B01111100};
 
 
+// unsigned char pacman[] = {
+//     0B01111000,
+//     0B01001000,
+//     0B01001000,
+//     0B01110000,
+//     0B01001000,
+//     0B01000100,
+//     0B01000100,
+//     0B01111100};
+
 
 unsigned char B[] = {
     0B01111000,
@@ -133,17 +143,11 @@ void scrollDemo(){
     for(int startX = 20; startX > 1; startX--)
     {
         clrscr();
-        gotoxy(startX,0);
-        for(int r=0; r<10;r++){
-            for(int c=0; c<30;c++){
-                printf(" ");
-            }
-            printf("\n");
-        }
-        gotoxy(startX,0);
+
         for(int row = 0; row < 8;row++){
             unsigned char todo = S[row];
             for(int col = 7; col >=0; col--){
+                gotoxy(startX-col,0+row);
                 if(BIT_CHECK(todo,col))
                     printf("#");
                 else printf(" ");
