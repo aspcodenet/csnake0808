@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 
 // #####################
 // #      @            #  
@@ -98,7 +99,68 @@ void moveSnake(Snake *snake,Snake_Direction direction){
 }
 
 
+
+
+#define BIT_SET(a, b) ((a) |= (1ULL << (b)))
+#define BIT_CLEAR(a,b) ((a) &= ~(1ULL<<(b)))
+#define BIT_FLIP(a,b) ((a) ^= (1ULL<<(b)))
+#define BIT_CHECK(a,b) (!!((a) & (1ULL<<(b)))) 
+
+//unsigned char B[] = {0B01111000,0B01001000,0B01001000,0B01110000,0B01001000,0B01000100,0B01000100,0B01111100};
+
+
+
+unsigned char B[] = {
+    0B01111000,
+    0B01001000,
+    0B01001000,
+    0B01110000,
+    0B01001000,
+    0B01000100,
+    0B01000100,
+    0B01111100};
+unsigned char S[] = {
+    0B00000000,
+    0B00111100,
+    0B00100000,
+    0B00111100,
+    0B00000100,
+    0B00000100,
+    0B00111100,
+    0B00000000};
+
+void scrollDemo(){
+    for(int startX = 20; startX > 1; startX--)
+    {
+        clrscr();
+        gotoxy(startX,0);
+        for(int r=0; r<10;r++){
+            for(int c=0; c<30;c++){
+                printf(" ");
+            }
+            printf("\n");
+        }
+        gotoxy(startX,0);
+        for(int row = 0; row < 8;row++){
+            unsigned char todo = S[row];
+            for(int col = 7; col >=0; col--){
+                if(BIT_CHECK(todo,col))
+                    printf("#");
+                else printf(" ");
+            }
+            printf("\n");
+        }
+        sleep(1);
+   }
+}
+
+
+
+
+
 int main(){
+    scrollDemo();
+    return 0;
     Snake snake; // snake är en array med kroppsdelar - varje kroppsdel har en X och en Y
                     //   arrayen[0] = huvudet  12,10   array[1] = 11,10 array[2]=9,10
                         //           @@@
